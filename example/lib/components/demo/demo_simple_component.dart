@@ -2,7 +2,7 @@
  * fluro
  * Created by Yakka
  * https://theyakka.com
- * 
+ *
  * Copyright (c) 2019 Yakka, LLC. All rights reserved.
  * See LICENSE for distribution and usage details.
  */
@@ -13,7 +13,8 @@ class DemoSimpleComponent extends StatelessWidget {
   DemoSimpleComponent(
       {String message = "Testing",
       Color color = const Color(0xFFFFFFFF),
-      String result})
+      String result,
+      this.include})
       : this.message = message,
         this.color = color,
         this.result = result;
@@ -21,35 +22,38 @@ class DemoSimpleComponent extends StatelessWidget {
   final String message;
   final Color color;
   final String result;
+  final Widget include;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return new Material(
       color: color,
-      child: Column(
+      child: new Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image(
-            image: AssetImage("assets/images/acc_boom.png"),
+          new Image(
+            image: new AssetImage("assets/images/acc_boom.png"),
             color: ColorHelpers.blackOrWhiteContrastColor(color),
             width: 260.0,
           ),
-          Padding(
-            padding: EdgeInsets.only(left: 50.0, right: 50.0, top: 15.0),
-            child: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: ColorHelpers.blackOrWhiteContrastColor(color),
-                height: 2.0,
-              ),
-            ),
+          new Padding(
+            padding: new EdgeInsets.only(left: 50.0, right: 50.0, top: 15.0),
+            child: include != null
+                ? include
+                : new Text(
+                    message,
+                    textAlign: TextAlign.center,
+                    style: new TextStyle(
+                      color: ColorHelpers.blackOrWhiteContrastColor(color),
+                      height: 2.0,
+                    ),
+                  ),
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 15.0),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: 42.0),
-              child: FlatButton(
+          new Padding(
+            padding: new EdgeInsets.only(top: 15.0),
+            child: new ConstrainedBox(
+              constraints: new BoxConstraints(minHeight: 42.0),
+              child: new FlatButton(
                 highlightColor:
                     ColorHelpers.blackOrWhiteContrastColor(color).withAlpha(17),
                 splashColor:
@@ -61,9 +65,9 @@ class DemoSimpleComponent extends StatelessWidget {
                     Navigator.pop(context, result);
                   }
                 },
-                child: Text(
+                child: new Text(
                   "OK",
-                  style: TextStyle(
+                  style: new TextStyle(
                     fontSize: 18.0,
                     color: ColorHelpers.blackOrWhiteContrastColor(color),
                   ),
