@@ -8,12 +8,11 @@
  */
 import 'dart:async';
 
+import '../../config/application.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../../config/application.dart';
 
 class HomeComponent extends StatefulWidget {
   @override
@@ -79,7 +78,7 @@ class HomeComponentState extends State<HomeComponent> {
                 child: Text(
                   "Click here to copy a deep link url to the clipboard",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: new TextStyle(
                     fontSize: 12.0,
                     color: const Color(0xCCFFFFFF),
                   ),
@@ -107,6 +106,8 @@ class HomeComponentState extends State<HomeComponent> {
           "pop-result"),
       menuButton(context, 'assets/images/ic_function_hz.png', "Function Call",
           "function-call"),
+      menuButton(context, 'assets/images/ic_function_hz.png',
+          "[NEW] Route Settings Arguments", "arguments"),
     ];
 
     final size = MediaQuery.of(context).size;
@@ -204,6 +205,8 @@ class HomeComponentState extends State<HomeComponent> {
     String result;
     TransitionType transitionType = TransitionType.native;
     if (key != "custom" && key != "function-call" && key != "fixed-trans") {
+      Object arg;
+
       if (key == "native") {
         hexCode = "#F76F00";
         message =
@@ -223,6 +226,8 @@ class HomeComponentState extends State<HomeComponent> {
         message =
             "When you close this screen you should see the current day of the week";
         result = "Today is ${_daysOfWeek[DateTime.now().weekday - 1]}!";
+      } else if (key == "arguments") {
+        arg = Text('This widget was passed as argument.');
       }
 
       String route = "/demo?message=$message&color_hex=$hexCode";
@@ -232,7 +237,8 @@ class HomeComponentState extends State<HomeComponent> {
       }
 
       Application.router
-          .navigateTo(context, route, transition: transitionType)
+          .navigateTo(context, route,
+              transition: transitionType, arguments: arg)
           .then((result) {
         if (key == "pop-result") {
           Application.router.navigateTo(context, "/demo/func?message=$result");
