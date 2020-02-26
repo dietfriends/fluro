@@ -2,6 +2,11 @@
 - Added the ability to pass and receive arguments in addition to the parameters.
 - **BREAKING CHANGE:** The HandlerFunc now expects a third parameter of type `Object` called `arguments`.
 
+# 1.5.2
+- Remove dependency on `dart:io`
+- 1.5.x and lower now only supports Flutter versions `< 1.13.0` 
+
+
 # 1.5.1
 - Add explicit material and full screen material transition types
 - Fix issue in transition logic
