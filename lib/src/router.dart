@@ -45,6 +45,9 @@ class Router {
   Future navigateTo(BuildContext context, String path,
       {bool replace = false,
       bool clearStack = false,
+      bool rootNavigator = false,
+      bool nullOk = false,
+      NavigatorState customNavigator,
       TransitionType transition,
       Duration transitionDuration = const Duration(milliseconds: 250),
       RouteTransitionsBuilder transitionBuilder,
@@ -57,6 +60,7 @@ class Router {
     Route<dynamic> route = routeMatch.route;
     Completer completer = Completer();
     Future future = completer.future;
+
     if (routeMatch.matchType == RouteMatchType.nonVisual) {
       completer.complete("Non visual route type.");
     } else {
@@ -64,13 +68,28 @@ class Router {
         route = _notFoundRoute(context, path);
       }
       if (route != null) {
+        final NavigatorState navigator = customNavigator ??
+            (rootNavigator
+                ? context.rootAncestorStateOfType(
+                    const TypeMatcher<NavigatorState>())
+                : context
+                    .ancestorStateOfType(const TypeMatcher<NavigatorState>()));
+        assert(() {
+          if (navigator == null && !nullOk) {
+            throw FlutterError(
+                'Navigator operation requested with a context that does not include a Navigator.\n'
+                'The context used to push or pop routes from the Navigator must be that of a '
+                'widget that is a descendant of a Navigator widget.');
+          }
+          return true;
+        }());
+
         if (clearStack) {
-          future =
-              Navigator.pushAndRemoveUntil(context, route, (check) => false);
+          future = navigator.pushAndRemoveUntil(route, (check) => false);
         } else {
           future = replace
-              ? Navigator.pushReplacement(context, route)
-              : Navigator.push(context, route);
+              ? navigator.pushReplacement(route)
+              : navigator.push(route);
         }
         completer.complete();
       } else {
