@@ -56,7 +56,7 @@ class Router {
         transitionType: transition,
         transitionsBuilder: transitionBuilder,
         transitionDuration: transitionDuration,
-        routeSettings: RouteSettings(arguments: arguments));
+        routeSettings: RouteSettings(name: path, arguments: arguments));
     Route<dynamic> route = routeMatch.route;
     Completer completer = Completer();
     Future future = completer.future;
