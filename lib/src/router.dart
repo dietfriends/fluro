@@ -16,7 +16,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Router {
+  Router({this.navigatorKey});
+
   static final appRouter = Router();
+
+  // The GlobalKey which controlls routing from outside (not using Navigator directory).
+  final GlobalKey<NavigatorState> navigatorKey;
 
   /// The tree structure that stores the defined routes
   final RouteTree _routeTree = RouteTree();
@@ -90,6 +95,48 @@ class Router {
           future = replace
               ? navigator.pushReplacement(route)
               : navigator.push(route);
+        }
+        completer.complete();
+      } else {
+        String error = "No registered route was found to handle '$path'.";
+        print(error);
+        completer.completeError(RouteNotFoundException(error, path));
+      }
+    }
+
+    return future;
+  }
+
+  Future navigateToWithGlobalNavigator(String path,
+      {bool replace = false,
+      bool clearStack = false,
+      TransitionType transition,
+      Duration transitionDuration = const Duration(milliseconds: 250),
+      RouteTransitionsBuilder transitionBuilder,
+      Object arguments}) {
+    BuildContext context = navigatorKey.currentState.context;
+    RouteMatch routeMatch = matchRoute(context, path,
+        transitionType: transition,
+        transitionsBuilder: transitionBuilder,
+        transitionDuration: transitionDuration,
+        routeSettings: RouteSettings(arguments: arguments));
+    Route<dynamic> route = routeMatch.route;
+    Completer completer = Completer();
+    Future future = completer.future;
+    if (routeMatch.matchType == RouteMatchType.nonVisual) {
+      completer.complete("Non visual route type.");
+    } else {
+      if (route == null && notFoundHandler != null) {
+        route = _notFoundRoute(context, path);
+      }
+      if (route != null) {
+        if (clearStack) {
+          future = navigatorKey.currentState
+              .pushAndRemoveUntil(route, (check) => false);
+        } else {
+          future = replace
+              ? navigatorKey.currentState.pushReplacement(route)
+              : navigatorKey.currentState.push(route);
         }
         completer.complete();
       } else {
