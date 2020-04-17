@@ -3,9 +3,9 @@
 
 The brightest, hippest, coolest router for Flutter.
 
-[![Version](https://img.shields.io/badge/version-1.5.2-blue.svg)](https://pub.dartlang.org/packages/fluro)
-[![Build Status](https://travis-ci.org/theyakka/fluro.svg?branch=master)](https://travis-ci.org/theyakka/fluro)
-[![Coverage](https://codecov.io/gh/theyakka/fluro/branch/master/graph/badge.svg)](https://codecov.io/gh/theyakka/fluro)
+[![Version](https://img.shields.io/badge/version-1.6.3-blue.svg)](https://pub.dartlang.org/packages/fluro)
+[![Build Status](https://travis-ci.com/dietfriends/fluro.svg?branch=master)](https://travis-ci.com/dietfriends/fluro)
+[![Coverage](https://codecov.io/gh/dietfriends/fluro/branch/master/graph/badge.svg)](https://codecov.io/gh/dietfriends/fluro)
 
 ## Features
 
