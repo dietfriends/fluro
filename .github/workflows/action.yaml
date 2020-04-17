@@ -1,0 +1,30 @@
+name: Test
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    name: unit test
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '1.12.13+hotfix.9'
+      - name: flutter doctor
+        run: flutter doctor
+      - name: Run test
+        run:  flutter test --coverage
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          #file: coverage.xml
+          #flags: unittests
+          #name: codecov-umbrella
+          #fail_ci_if_error: true
